@@ -588,7 +588,7 @@ export default function VideoMeetComponent() {
                     {showModal ? <div className={styles.chatRoom}>
 
                         <div className={styles.chatContainer}>
-                            <h1>Chat</h1>
+                            <h1>[CHAT]</h1>
 
                             <div className={styles.chattingDisplay}>
 
@@ -608,7 +608,7 @@ export default function VideoMeetComponent() {
 
                             <div className={styles.chattingArea}>
                                 <TextField value={message} onChange={(e) => setMessage(e.target.value)} id="outlined-basic" label="Enter Your chat" variant="outlined" />
-                                <Button variant='contained' onClick={sendMessage}>Send</Button>
+                                <Button variant='contained' onClick={sendMessage}>[SEND]</Button>
                             </div>
 
 

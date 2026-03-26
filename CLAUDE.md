@@ -64,6 +64,18 @@ PORT=8000  # optional
 
 **Frontend** backend URL is toggled in `frontend/src/environment.js` via `IS_PROD` flag — set to `false` for local development to target `http://localhost:8000`.
 
+## Frontend Design System
+
+All pages share a consistent **gold brutalist** aesthetic:
+
+- **Colors**: `#D4A017` gold on `#080808` near-black; no blue/cyan anywhere
+- **Typography**: `Anton` / `Syne` for display headings; `JetBrains Mono` for all UI labels, buttons, inputs, and body text; `Playfair Display` italic for decorative script accents
+- **Shape**: `border-radius: 0` everywhere — sharp corners, no pill shapes, no rounded cards
+- **Borders**: `rgba(212, 160, 23, 0.18–0.35)` gold at varying opacity; hover state brightens border
+- **Buttons**: Bracket notation (`[HOME]`, `[JOIN]`, `[SEND]`, etc.); gold fill when active/primary, transparent with gold border when secondary
+- **Background**: Animated ASCII canvas (same `useEffect` pattern reused across pages) — `JetBrains Mono` characters at `rgba(185, 138, 18, 0.42)`, updating ~0.8% of cells per 80ms tick; covered by a radial + linear gradient overlay
+- **Topbar pattern**: `landingTopBar` (global App.css class) — flex row with `authTopLeft` nav group (`[HOME]` + `[V_C_26]`), centered `landingBrand` (`VideoCircle®`), right `bracketLabel` indicating current page
+
 ### Key Files
 
 | File | Purpose |
@@ -73,9 +85,12 @@ PORT=8000  # optional
 | `backend/src/controllers/user.controller.js` | Auth + history API handlers |
 | `frontend/src/App.js` | Route definitions |
 | `frontend/src/contexts/AuthContext.jsx` | Auth context + Axios client |
-| `frontend/src/pages/VideoMeet.jsx` | Video call component — lobby screen (ASCII canvas, topbar with `[HOME]`, name input, camera/mic toggles, video preview) + in-call view |
+| `frontend/src/App.css` | Global shared styles for all pages — landing, auth, guest, history; defines `landingTopBar`, `navLinkBracket`, `bracketLabel`, `landingBrand`, `authTopLeft`, and all page-specific classes |
+| `frontend/src/pages/landing.jsx` | Landing page (`/`) — ASCII canvas, topbar with `[JOIN AS GUEST]`, `[REGISTER]`, `[LOGIN]`; large Anton hero title |
+| `frontend/src/pages/authentication.jsx` | Auth page (`/auth`) — ASCII canvas, topbar with `[HOME]`, tabbed sign-in/register form in gold-bordered panel |
+| `frontend/src/pages/guest.jsx` | Guest join page (`/guest`) — unprotected, ASCII canvas, topbar with `[HOME]`, meeting code input; no history tracking |
+| `frontend/src/pages/home.jsx` | Home page (`/home`) — authenticated; meeting code input to start/join a call |
+| `frontend/src/pages/history.jsx` | History page (`/history`) — ASCII canvas (position: fixed), topbar with `[HOME]`, Anton heading "MEETING HISTORY", gold-bordered stacked card list (meeting code + date per row); empty state shows `[∅]` symbol |
+| `frontend/src/pages/VideoMeet.jsx` | Video call component (`/:meetingCode`) — **lobby**: ASCII canvas, topbar with `[HOME]`, name input, `[JOIN]` button, live preview, `[camera]`/`[mic]` toggle buttons (gold fill = on, transparent = off); **in-call**: black background, peer video grid (gold borders, sharp corners), self-video pip (bottom-left), flat gold-bordered control bar with icon buttons, `[CHAT]` side panel (330px, JetBrains Mono, gold text, `[SEND]` button) |
 | `frontend/src/styles/videoComponent.module.css` | All styles for the lobby and in-call screens |
-| `frontend/src/pages/landing.jsx` | Landing page (`/`) — ASCII canvas, top nav with `[JOIN AS GUEST]`, `[REGISTER]`, `[LOGIN]` |
-| `frontend/src/pages/authentication.jsx` | Auth page (`/auth`) — sign in + register tabs, topbar with `[HOME]` |
-| `frontend/src/pages/guest.jsx` | Guest join page (`/guest`) — unprotected, no history tracking, gold ASCII aesthetic |
 | `frontend/src/environment.js` | Backend URL config (toggle `IS_PROD`) |
