@@ -2,57 +2,6 @@
    LOBBY SCREEN
    ================================================================ */
 
-.lobbyTopBar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 20;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.1rem 2rem;
-    border-bottom: 1px solid rgba(212, 160, 23, 0.12);
-}
-
-.lobbyTopLeft {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.lobbyBrand {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: #D4A017;
-    letter-spacing: 0.1em;
-}
-
-.lobbyBracketLabel {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: #D4A017;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.lobbyHomeBtn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: #D4A017;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 1px solid transparent;
-    padding: 0.2rem 0.5rem;
-    transition: background 0.15s, color 0.15s;
-}
-
-.lobbyHomeBtn:hover {
-    background: #D4A017;
-    color: #080808;
-}
-
 .lobbyCanvas {
     position: absolute;
     inset: 0;
@@ -72,24 +21,32 @@
 
 .lobbyContainer {
     position: relative;
-    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
+    background: #080808;
+}
+
+.lobbyContent {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.lobbyMain {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #080808;
     gap: 1.5rem;
     padding: 2rem;
 }
 
-.lobbyContainer h2,
-.lobbyCard {
-    position: relative;
-    z-index: 10;
-}
-
-.lobbyContainer h2 {
+.lobbyMain h2 {
     font-family: 'Anton', 'Syne', sans-serif;
     font-size: 2rem;
     font-weight: 400;
