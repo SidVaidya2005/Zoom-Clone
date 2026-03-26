@@ -1,6 +1,5 @@
 import { Server } from "socket.io"
 
-
 let connections = {}
 let messages = {}
 let timeOnline = {}
@@ -14,7 +13,6 @@ export const connectToSocket = (server) => {
             credentials: true
         }
     });
-
 
     io.on("connection", (socket) => {
 
@@ -105,16 +103,9 @@ export const connectToSocket = (server) => {
                         }
                     }
                 }
-
             }
-
-
         })
-
-
     })
-
-
     return io;
 }
 
