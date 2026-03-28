@@ -59,8 +59,13 @@ const login = async (req, res) => {
 const register = async (req, res) => {
     const { name, username, password } = req.body;
 
+    // Ensure username is a safe literal value before using it in a query
+    if (typeof username !== "string" || username.trim() === "") {
+        return res.status(httpStatus.BAD_REQUEST).json({ message: "Invalid username" });
+    }
+
     try {
-        const existingUser = await User.findOne({ username });
+        const existingUser = await User.findOne({ username: { $eq: username } });
         if (existingUser) {
             return res.status(httpStatus.FOUND).json({ message: "User already exists" });
         }
