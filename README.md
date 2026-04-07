@@ -44,7 +44,7 @@ VideoCircle is a full-stack video conferencing application that lets users host 
 
 **Frontend:** [https://zoom-clone-teal-gamma.vercel.app](https://zoom-clone-teal-gamma.vercel.app)
 
-> The backend is hosted on Render (free tier — may have a cold start delay of ~30s on first request).
+**Backend:** [https://awake-comfort-production-3879.up.railway.app](https://awake-comfort-production-3879.up.railway.app)
 
 ---
 
