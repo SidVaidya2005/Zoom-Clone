@@ -1,18 +1,13 @@
 import express from "express";
-import { createServer } from "node:http";
 import "dotenv/config";
 
-import { Server } from "socket.io";
-
 import mongoose from "mongoose";
-import { connectToSocket } from "./controllers/socketManager.js";
-
 import cors from "cors";
+
 import userRoutes from "./routes/users.routes.js";
+import meetRoutes from "./routes/meet.routes.js";
 
 const app = express();
-const server = createServer(app);
-const io = connectToSocket(server);
 
 app.set("port", process.env.PORT || 8000);
 app.use(cors());
@@ -20,9 +15,9 @@ app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
 
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/meet", meetRoutes);
 
 const start = async () => {
-  app.set("mongo_user");
   const mongoUrl = process.env.MONGO_URL;
   if (!mongoUrl) {
     throw new Error("MONGO_URL is not set in .env");
@@ -32,9 +27,9 @@ const start = async () => {
     tlsAllowInvalidCertificates: false,
   });
 
-  console.log(`MONGO Connected DB HOst: ${connectionDb.connection.host}`);
-  server.listen(app.get("port"), () => {
-    console.log("LISTENIN ON PORT 8000");
+  console.log(`MONGO Connected DB Host: ${connectionDb.connection.host}`);
+  app.listen(app.get("port"), () => {
+    console.log(`Listening on port ${app.get("port")}`);
   });
 };
 
