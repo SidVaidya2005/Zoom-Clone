@@ -1,3 +1,15 @@
+/* Mobile touch globals */
+* {
+  /* Subtle gold flash instead of the default grey smear on tap */
+  -webkit-tap-highlight-color: rgba(212, 160, 23, 0.1);
+}
+
+/* Removes 300ms tap delay on interactive elements */
+a, button, [role="button"], .navLinkBracket, .startBtn,
+.authSubmitBtn, .authTab, .lobbyMediaBtn {
+  touch-action: manipulation;
+}
+
 /* iOS Safari input zoom prevention — font-size must be >= 16px */
 input, textarea, select {
   font-size: max(16px, 1em);
@@ -91,6 +103,12 @@ input, textarea, select {
   color: #080808;
   border-color: #D4A017;
   background: #D4A017;
+}
+
+.navLinkBracket:active {
+  transform: scale(0.94);
+  opacity: 0.8;
+  transition: all 0.1s ease;
 }
 
 /* ================================================================
@@ -281,6 +299,12 @@ input, textarea, select {
   color: #D4A017;
 }
 
+.startBtn:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+  transition: all 0.1s ease;
+}
+
 /* ================================================================
    AUTH PAGE
    ================================================================ */
@@ -399,6 +423,12 @@ input, textarea, select {
 .authSubmitBtn:hover {
   background: transparent;
   color: #D4A017;
+}
+
+.authSubmitBtn:active {
+  transform: scale(0.97);
+  opacity: 0.85;
+  transition: all 0.1s ease;
 }
 
 .authError {

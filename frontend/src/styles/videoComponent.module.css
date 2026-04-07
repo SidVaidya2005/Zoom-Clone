@@ -118,6 +118,12 @@
     color: rgba(212, 160, 23, 0.65);
 }
 
+.lobbyMediaBtn:active {
+    transform: scale(0.94);
+    opacity: 0.8;
+    transition: all 0.1s ease;
+}
+
 .lobbyVideo {
     width: 320px;
     max-width: 80vw;
@@ -204,6 +210,13 @@
     box-shadow: none !important;
 }
 
+.controlBar :global(.MuiIconButton-root:active) {
+    background: rgba(212, 160, 23, 0.18) !important;
+    color: #D4A017 !important;
+    transform: scale(0.91) !important;
+    transition: all 0.1s ease !important;
+}
+
 .controlBar svg {
     font-size: 1.3rem;
 }
@@ -230,6 +243,8 @@
     height: 100%;
     box-sizing: border-box;
     align-content: center;
+    grid-template-columns: repeat(var(--grid-cols, 1), 1fr);
+    grid-template-rows: repeat(var(--grid-rows, 1), 1fr);
 }
 
 .conferenceCell {
@@ -262,6 +277,13 @@
     flex-direction: column;
 }
 
+.chatHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(212, 160, 23, 0.15);
+}
+
 .chatRoom h1 {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
@@ -271,7 +293,21 @@
     text-transform: uppercase;
     margin: 0;
     padding: 1rem 1.2rem;
-    border-bottom: 1px solid rgba(212, 160, 23, 0.15);
+    border-bottom: none;
+}
+
+/* Hidden on desktop; shown on mobile via media query */
+.chatCloseBtn {
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #D4A017;
+    background: transparent;
+    border: none;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    line-height: 1;
 }
 
 .chatContainer {
@@ -366,6 +402,70 @@
 .chattingArea :global(.MuiButton-contained:hover) {
     background: transparent !important;
     color: #D4A017 !important;
+}
+
+/* ================================================================
+   MOBILE RESPONSIVE — VIDEO ROOM
+   ================================================================ */
+
+@media (max-width: 768px) {
+    /* ── Container: needs relative so chat overlay is scoped to it ── */
+    .meetVideoContainer {
+        position: relative;
+    }
+
+    /* ── Self-video: move to top-right, shrink so it clears controls ── */
+    .meetUserVideo {
+        top: 16px;
+        right: 16px;
+        bottom: auto;
+        left: auto;
+        height: 120px;
+        width: auto;
+        max-width: 30vw;
+    }
+
+    /* ── Chat: absolute overlay instead of a side column ── */
+    .chatRoom {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 80px; /* clear the control bar */
+        width: auto;
+        height: auto;
+        border-left: none;
+        border-bottom: 1px solid rgba(212, 160, 23, 0.22);
+        z-index: 40;
+    }
+
+    /* ── Close button: visible only on mobile ── */
+    .chatCloseBtn {
+        display: block;
+    }
+
+    /* ── Conference grid: single column, each cell a fixed viewport height ── */
+    .conferenceView {
+        grid-template-columns: 1fr;
+        grid-template-rows: unset;
+        grid-auto-rows: minmax(35vh, 1fr);
+        align-content: start;
+        overflow-y: auto;
+        padding-bottom: 96px;
+    }
+
+    /* ── Control bar: safe spacing between buttons ── */
+    .controlBar {
+        gap: 8px;
+        padding: 0 8px;
+    }
+
+    /* ── End call: visual separation so it can't be accidentally tapped ── */
+    .endCallBtn {
+        margin: 0 8px;
+        border-left: 1px solid rgba(212, 160, 23, 0.25);
+        border-right: 1px solid rgba(212, 160, 23, 0.25);
+    }
 }
 
 /* ================================================================

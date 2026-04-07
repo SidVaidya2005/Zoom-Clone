@@ -8,13 +8,23 @@ export default function ChatPanel({
     message,
     setMessage,
     sendMessage,
+    setModal,
 }) {
     if (!showModal) return <></>;
 
     return (
         <div className={styles.chatRoom}>
             <div className={styles.chatContainer}>
-                <h1>[CHAT]</h1>
+                <div className={styles.chatHeader}>
+                    <h1>[CHAT]</h1>
+                    <button
+                        className={styles.chatCloseBtn}
+                        onClick={() => setModal(false)}
+                        aria-label="Close chat"
+                    >
+                        [×]
+                    </button>
+                </div>
 
                 <div className={styles.chattingDisplay}>
                     {messages.length !== 0 ? messages.map((item, index) => {

@@ -80,6 +80,7 @@ export default function VideoMeetComponent() {
                         message={message}
                         setMessage={setMessage}
                         sendMessage={sendMessage}
+                        setModal={setModal}
                     />
                 </div>
             }

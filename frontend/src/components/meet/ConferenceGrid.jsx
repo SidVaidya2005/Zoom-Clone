@@ -15,8 +15,8 @@ export default function ConferenceGrid({ videos }) {
         <div
             className={styles.conferenceView}
             style={{
-                gridTemplateColumns: `repeat(${cols}, 1fr)`,
-                gridTemplateRows: `repeat(${rows}, 1fr)`,
+                '--grid-cols': cols,
+                '--grid-rows': rows,
             }}
         >
             {videos.map((video) => (
