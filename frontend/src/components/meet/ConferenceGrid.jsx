@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { useTracks } from '@livekit/components-react';
+import { Track } from 'livekit-client';
 import styles from '../../styles/videoComponent.module.css';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import MicOffIcon from '@mui/icons-material/MicOff';
@@ -10,53 +12,29 @@ function getGridDimensions(count) {
     return { cols, rows };
 }
 
-function ConferenceCell({ video }) {
-    const [videoMuted, setVideoMuted] = useState(false);
-    const [audioMuted, setAudioMuted] = useState(false);
+function ConferenceCell({ trackRef }) {
+    const videoRef = useRef(null);
+    const track = trackRef.publication?.track;
 
     useEffect(() => {
-        if (!video.stream) return;
+        if (!track || !videoRef.current) return;
+        track.attach(videoRef.current);
+        const el = videoRef.current;
+        return () => track.detach(el);
+    }, [track]);
 
-        const vTrack = video.stream.getVideoTracks()[0];
-        const aTrack = video.stream.getAudioTracks()[0];
-
-        // Set initial mute state from current track status
-        setVideoMuted(!vTrack || vTrack.muted);
-        setAudioMuted(!aTrack || aTrack.muted);
-
-        const onVMute = () => setVideoMuted(true);
-        const onVUnmute = () => setVideoMuted(false);
-        const onAMute = () => setAudioMuted(true);
-        const onAUnmute = () => setAudioMuted(false);
-
-        vTrack?.addEventListener('mute', onVMute);
-        vTrack?.addEventListener('unmute', onVUnmute);
-        aTrack?.addEventListener('mute', onAMute);
-        aTrack?.addEventListener('unmute', onAUnmute);
-
-        return () => {
-            vTrack?.removeEventListener('mute', onVMute);
-            vTrack?.removeEventListener('unmute', onVUnmute);
-            aTrack?.removeEventListener('mute', onAMute);
-            aTrack?.removeEventListener('unmute', onAUnmute);
-        };
-    }, [video.stream]);
+    const isVideoMuted = trackRef.publication?.isMuted ?? false;
+    const isAudioMuted = !trackRef.participant.isMicrophoneEnabled;
 
     return (
         <div className={styles.conferenceCell}>
-            <video
-                data-socket={video.socketId}
-                ref={ref => {
-                    if (ref && video.stream) ref.srcObject = video.stream;
-                }}
-                autoPlay
-            />
-            {videoMuted && (
+            <video ref={videoRef} autoPlay />
+            {isVideoMuted && (
                 <div className={styles.videoOffOverlay}>
                     <VideocamOffIcon />
                 </div>
             )}
-            {audioMuted && (
+            {isAudioMuted && (
                 <div className={styles.micOffBadge}>
                     <MicOffIcon />
                 </div>
@@ -65,8 +43,14 @@ function ConferenceCell({ video }) {
     );
 }
 
-export default function ConferenceGrid({ videos }) {
-    const { cols, rows } = getGridDimensions(videos.length);
+export default function ConferenceGrid() {
+    const tracks = useTracks(
+        [Track.Source.Camera, Track.Source.ScreenShare],
+        { onlySubscribed: false }
+    );
+
+    const remoteTracks = tracks.filter((t) => !t.participant.isLocal);
+    const { cols, rows } = getGridDimensions(remoteTracks.length);
 
     return (
         <div
@@ -76,8 +60,11 @@ export default function ConferenceGrid({ videos }) {
                 '--grid-rows': rows,
             }}
         >
-            {videos.map((video) => (
-                <ConferenceCell key={video.socketId} video={video} />
+            {remoteTracks.map((trackRef) => (
+                <ConferenceCell
+                    key={`${trackRef.participant.identity}-${trackRef.source}`}
+                    trackRef={trackRef}
+                />
             ))}
         </div>
     );
