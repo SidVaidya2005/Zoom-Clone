@@ -40,8 +40,8 @@ export default function ChatPanel({ showModal, setModal, onNewMessage }) {
 
                 <div className={styles.chattingDisplay}>
                     {chatMessages.length ? (
-                        chatMessages.map((msg, index) => (
-                            <div style={{ marginBottom: '20px' }} key={index}>
+                        chatMessages.map((msg) => (
+                            <div style={{ marginBottom: '20px' }} key={`${msg.from?.identity}-${msg.timestamp}`}>
                                 <p style={{ fontWeight: 'bold' }}>
                                     {msg.from?.name || msg.from?.identity || 'Unknown'}
                                 </p>

@@ -24,7 +24,7 @@ function ConferenceCell({ trackRef }) {
     }, [track]);
 
     const isVideoMuted = trackRef.publication?.isMuted ?? false;
-    const isAudioMuted = !trackRef.participant.isMicrophoneEnabled;
+    const isAudioMuted = !trackRef.participant?.isMicrophoneEnabled;
 
     return (
         <div className={styles.conferenceCell}>

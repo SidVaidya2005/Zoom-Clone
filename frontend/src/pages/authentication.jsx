@@ -139,7 +139,7 @@ export default function Authentication() {
                 </div>
             </div>
 
-            <Snackbar open={open} autoHideDuration={4000} message={message} />
+            <Snackbar open={open} autoHideDuration={4000} message={message} onClose={() => setOpen(false)} />
         </ThemeProvider>
     );
 }

@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
+import { Snackbar } from '@mui/material';
 import "../App.css";
 import useASCIICanvas from '../hooks/useASCIICanvas';
+import withAuth from '../utils/withAuth';
 
-export default function History() {
+function History() {
     const { getHistoryOfUser } = useContext(AuthContext);
     const [meetings, setMeetings] = useState([]);
+    const [errorOpen, setErrorOpen] = useState(false);
     const routeTo = useNavigate();
     const canvasRef = useASCIICanvas();
 
@@ -16,7 +19,7 @@ export default function History() {
                 const history = await getHistoryOfUser();
                 setMeetings(history);
             } catch {
-                // IMPLEMENT SNACKBAR
+                setErrorOpen(true);
             }
         }
         fetchHistory();
@@ -31,6 +34,7 @@ export default function History() {
     }
 
     return (
+        <>
         <div className="historyPage">
             <canvas ref={canvasRef} className="historyCanvas" />
             <div className="historyOverlay" />
@@ -52,8 +56,8 @@ export default function History() {
                     </div>
 
                     <div className="historyList">
-                        {meetings.length !== 0 ? meetings.map((e, i) => (
-                            <div key={i} className="historyCardItem">
+                        {meetings.length !== 0 ? meetings.map((e) => (
+                            <div key={`${e.meetingCode}-${e.date}`} className="historyCardItem">
                                 <span className="historyCardCode">{e.meetingCode}</span>
                                 <span className="historyCardDate">{formatDate(e.date)}</span>
                             </div>
@@ -68,5 +72,14 @@ export default function History() {
                 </main>
             </div>
         </div>
+            <Snackbar
+                open={errorOpen}
+                autoHideDuration={4000}
+                message="Failed to load meeting history"
+                onClose={() => setErrorOpen(false)}
+            />
+        </>
     )
 }
+
+export default withAuth(History);
