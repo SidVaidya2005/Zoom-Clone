@@ -15,7 +15,7 @@ export const getToken = async (req, res) => {
   }
 
   const at = new AccessToken(apiKey, apiSecret, {
-    identity: username,
+    identity: `${username}-${globalThis.crypto.randomUUID()}`,
     name: username,
     ttl: "1h",
   });
